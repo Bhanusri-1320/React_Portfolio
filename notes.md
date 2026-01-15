@@ -1,5 +1,51 @@
 # React:
-- Is a JS library
+- Is a JS library for building dynamic and interactive UIs4
+- currently mostly used front-end development 
+- When a webpage is loaded, browser takes the HTML code and converts it into tree like structure called DOM
+- This allows us to use Javascript and change page content
+- We can use plain java script(vanilla js), with this it will be quite complex to manage
+- Using React we can write small reusable components, then react will take care of creating and updating DOM.
+- Components help us to write reusable, managable and better organized code.
+- App is the root component, we can create more components
+-  Vite+React then Next+React
+- ### Project Structure:
+1. Index.html - Entry point of our application
+2. Package.json - dependencies, title and packages etc
+- For react componenets the entensions is tsx -> TS + TSX(HTML like structure means "const element = <h1>Hello World</h1>;") 
+- Most react developers are using Pascal case(always first letter starts with Captial letter)
+- JSX -> Js + XML
+- Vite under the hood always monitors the code, when ever we make any change in the code it will automatically refresh the page and updates the DOM.
+- ### How React works:
+- With the Componenets we have in the prj, React creates a Virtual DOM which is diff from actual DOM
+- It creates VDOM with the componenst, each component as a node in VDOM
+- When we make a change in the React component, it will updates the corresponding node in the VDOM.
+- Then it compares with the actual browser DOM and updates those nodes only in actual DOM.
+- ### React Eco System:
+- React - Library -  like a tool
+- Angular and Vue - Frame work- like a tool set
+- Diff b/w Library and Frame work:
+-  ![alt text](image-5.png)
+- ### Building Components:
+- The react component can only return one element
+- So instead of adding a new element to wrap everything we can use some thing called Fragment which is an Fragment tags(<Fragment><Fragment/>), this tag will not be added into the DOM.
+- Instead of Fragment we can also use an EMPTY tags means a fragment only
+- #### Rendering Lists:
+- ![alt text](image-6.png)
+- If we wanted to dynamically add the data in component, we can use js right but we need to wrap it in {} braces in JSX.
+- In a list or any items or tags, react needs a unique key to keep track of the element 
+- ![alt text](image-7.png)
+- We can add a unique Key like above
+- ###### Conditional Rendering:
+- ![alt text](image-8.png)
+- ![alt text](image-9.png)
+- We can use conditional 'AND' for conditional rendering.
+- #### Handling Events:
+- 
+
+
+
+
+----------------------------------------------------------------
 - Componenets: Building blocks of every react app and they are reusable
 - ![alt text](image.png)
 - Every components is Js function that returns markup(means Js + XML)
