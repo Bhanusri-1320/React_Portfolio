@@ -1,5 +1,5 @@
 # React:
-- Is a JS library for building dynamic and interactive UIs4
+- Is a JS library for building dynamic and interactive UIs
 - currently mostly used front-end development 
 - When a webpage is loaded, browser takes the HTML code and converts it into tree like structure called DOM
 - This allows us to use Javascript and change page content
@@ -11,7 +11,7 @@
 - ### Project Structure:
 1. Index.html - Entry point of our application
 2. Package.json - dependencies, title and packages etc
-- For react componenets the entensions is tsx -> TS + TSX(HTML like structure means "const element = <h1>Hello World</h1>;") 
+- For react componenets the extensions is tsx -> TS + TSX(HTML like structure means "const element = <h1>Hello World</h1>;") 
 - Most react developers are using Pascal case(always first letter starts with Captial letter)
 - JSX -> Js + XML
 - Vite under the hood always monitors the code, when ever we make any change in the code it will automatically refresh the page and updates the DOM.
@@ -61,6 +61,331 @@
 - DOM: Document Object MOdel
 - ![alt text](image-3.png)
 - ![alt text](image-4.png)
+- ### Managing state:
+- When we have any var/data that changes, we need to tell react that this component will have data/var that changes over time
+- To tell that we will use a buil in fn called "useState", this is also called as hook.
+- This useState returns an array and we will have var at 0 th index and fn at 1st index
+- ![alt text](image-10.png)
+- ![alt text](image-11.png)
+- useState is a hook which has 2 things- var and a fn
+- When we pass any value to the fn that value will be going to store in the that par var.
+- ### Passing Data via Props:
+```tsx
+import { useState } from "react";
+let List = ['a', 'b', 'c', 'd'];
+//List = [];
+// const handleClick = (event: MouseEvent) => console.log(event);
+//let selectedIndex = -1;
+
+function ListGroup() 
+{
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    return <>
+        <h1>ListGroup</h1>
+        {List.length === 0 && <p>No items found</p>}
+        <ul className="list-group">
+            {List.map((item, index) => (<li
+                className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
+                key={item}
+                // onClick={handleClick}
+                onClick={() => { setSelectedIndex(index); }}>
+                {item}
+            </li>))}
+        </ul>
+    </>
+}
+
+export default ListGroup;
+```
+- Here If we want to have a list of names instead of cities, we should not create a new list right.
+- So to make it dynamic we have to pass the data similarly like a fn.
+- In the above code we can pass the heading and items instead of hard coding them
+- So to do that we use interface, like below
+- ![alt text](image-12.png)
+```tsx
+import { useState } from "react";
+//List = [];
+// const handleClick = (event: MouseEvent) => console.log(event);
+//let selectedIndex = -1;
+interface ListGroupProps {
+    items: string[];
+    heading: string;
+}
+
+function ListGroup(ListGroupProps: ListGroupProps) {
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    return <>
+        <h1>ListGroup</h1>
+        {ListGroupProps.items.length === 0 && <p>No items found</p>}
+        <ul className="list-group">
+            {ListGroupProps.items.map((item, index) => (<li
+                className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
+                key={item}
+                // onClick={handleClick}
+                onClick={() => { setSelectedIndex(index); }}>
+                {item}
+            </li>))}
+        </ul>
+    </>
+}
+
+export default ListGroup;
+
+----------------------------------------------
+App.tsx:
+
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+function App() {
+  let items = ['a', 'b', 'c', 'd'];
+  return <div><ListGroup items={items} heading="ListGroup" /></div>
+}
+export default App
+
+```
+
+- ### Passing fns via proprs:
+- If any change happened or  anything is selected in child component then we want to notify the parent comp means we can use these method
+- need to defined a fn in child class and when a click happened we call that fn
+```tsx
+import { useState } from "react";
+//List = [];
+// const handleClick = (event: MouseEvent) => console.log(event);
+//let selectedIndex = -1;
+interface ListGroupProps {
+    items: string[];
+    heading: string;
+    onSelectItem: (item: string) => void;
+}
+
+function ListGroup({ items, heading, onSelectItem }: ListGroupProps) {
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    return <>
+        <h1>{heading}</h1>
+        {items.length === 0 && <p>No items found</p>}
+        <ul className="list-group">
+            {items.map((item, index) => (<li
+                className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
+                key={item}
+                // onClick={handleClick}
+                onClick={() => {
+                    setSelectedIndex(index);
+                    onSelectItem(item);
+                }}>
+                {item}
+            </li>))}
+        </ul>
+    </>
+}
+
+export default ListGroup;
+
+
+-----------------------
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+function App() {
+  let items = ['a', 'b', 'c', 'd'];
+  const onSelectedItem=(items:string)=>console.log(items);
+  return <div><ListGroup items={items} heading="Alphabets"  onSelectItem={onSelectedItem}/></div>
+}
+export default App
+```
+
+- ### State vs Prop:
+- ![alt text](image-14.png)
+- ### Passing children:
+- We can pass data from one component to another through props but we need to send it like below:
+```jsx
+interface AlertProps {
+    text: string
+}
+const Alertfn = () => { console.log("Alert function called"); }
+const Alert = ({ text }: AlertProps) => {
+    return (
+        <div className="alert alert-primary" role="alert" onClick={Alertfn}>
+            {text}
+        </div>);
+}
+export default Alert;
+///////////////////////////////////////////////////
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+import Alert from "./Components/Alert"
+function App() {
+  let items = ['a', 'b', 'c', 'd'];
+  const onSelectedItem = (items: string) => console.log(items);
+  const text = "Hello! This is an alert message.";
+  return <div>
+    {/* <ListGroup items={items} heading="Alphabets" onSelectItem={onSelectedItem} /> */}
+    <Alert text={text} />
+  </div>
+}
+export default App
+
+```
+- SO instead like  below we can directly send using childern
+```jsx
+ return <div>
+    {/* <ListGroup items={items} heading="Alphabets" onSelectItem={onSelectedItem} /> */}
+    <Alert text={text} />
+  </div>
+```
+- To pass using children:
+```tsx
+interface AlertProps {
+    children: string
+}
+const Alertfn = () => { console.log("Alert function called"); }
+const Alert = ({ children }: AlertProps) => {
+    return (
+        <div className="alert alert-primary" role="alert" onClick={Alertfn}>
+            {children}
+        </div>);
+}
+export default Alert;
+/////////////////////////////////////////////
+
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+import Alert from "./Components/Alert"
+function App() {
+  let items = ['a', 'b', 'c', 'd'];
+  const onSelectedItem = (items: string) => console.log(items);
+  const text = "Hello! This is an alert message.";
+  return <div>
+    {/* <ListGroup items={items} heading="Alphabets" onSelectItem={onSelectedItem} /> */}
+    <Alert>Hello world!</Alert>
+  </div>
+}
+export default App
+```
+- If we want to send like a html/markup code using children then we have to define the type of children to ReactNode
+- like below:
+```tsx
+interface AlertProps {
+    children: ReactNode
+}
+```
+- React dev tools- for inspecting the react components
+- creating button component
+```tsx
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+import Alert from "./Components/Alert"
+import Button from "./Components/Button";
+function App() {
+  let items = ['a', 'b', 'c', 'd'];
+  const onSelectedItem = (items: string) => console.log(items);
+  const text = "Hello! This is an alert message.";
+  const handleButtonClick = () => {
+    console.log("Button clicked!");
+  }
+  return <div>
+    {/* <ListGroup items={items} heading="Alphabets" onSelectItem={onSelectedItem} /> */}
+    {/* <Alert>Hello world!</Alert> */}
+    <Button children="MyButton" onClick={handleButtonClick} color="success" />
+  </div>
+}
+export default App
+///////////////////////////////
+import type { ReactNode } from "react";
+
+interface ButtonProps {
+    children: ReactNode;
+    color: string;
+    onClick: () => void;
+}
+const Button = ({ children, onClick, color }: ButtonProps) => {
+    return <button type="button" className={'btn btn-' + color} onClick={onClick}>
+        Primary
+    </button>
+}
+export default Button;
+```
+- If we want to set the color to only few colors and dont want any other, then
+```tsx
+interface ButtonProps {
+    children: ReactNode;
+    color: "primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark";
+    onClick: () => void;
+}
+```
+- Task:
+- When we click on button, should show alert and when we click on close symbol of button the alert should dissapear
+```tsx
+import Message from "./Message"
+import ListGroup from "./Components/ListGroup"
+import Alert from "./Components/Alert"
+import Button from "./Components/Button";
+import { useState } from "react";
+function App() {
+  const [alertVisible, setAlertVisible] = useState(false);
+  let items = ['a', 'b', 'c', 'd'];
+  const onSelectedItem = (items: string) => console.log(items);
+  const text = "Hello! This is an alert message.";
+  const handleButtonClick = () => {
+    console.log("Button clicked!");
+    setAlertVisible(true);
+  }
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+  }
+  return <div>
+    {/* <ListGroup items={items} heading="Alphabets" onSelectItem={onSelectedItem} /> */}
+    {alertVisible && <Alert onCloseClick={handleAlertClose}>'Hello World!'</Alert>}
+    <Button children="MyButton" onClick={handleButtonClick} color="success" />
+  </div>
+}
+export default App
+///////////////////////////////////////
+import type { ReactNode } from "react";
+
+interface ButtonProps {
+    children: ReactNode;
+    color: "primary" | "secondary" | "success" | "danger" | "warning" | "info" | "light" | "dark";
+    onClick: () => void;
+}
+const Button = ({ children, onClick, color }: ButtonProps) => {
+    return <button type="button" className={'btn btn-' + color} onClick={onClick}>
+        {children}
+    </button>
+}
+export default Button;
+
+/////////////////////////////////////////
+
+import type { ReactNode } from "react";
+
+interface AlertProps {
+    children: ReactNode;
+    onCloseClick: () => void;
+}
+const Alertfn = () => { console.log("Alert function called"); }
+const Alert = ({ children, onCloseClick }: AlertProps) => {
+    return (
+        // <div className="alert alert-primary" role="alert" onClick={Alertfn}>
+        //     {children}
+        // </div>
+        <div className="alert alert-primary" role="alert">
+            {children}
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={onCloseClick}></button>
+        </div>
+    );
+}
+export default Alert;
+```
+
+
+
+
+
+
+
+
+
+
+
 
 ---------------------------------------------------------
 - ## Folder structure
