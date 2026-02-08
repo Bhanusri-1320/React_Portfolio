@@ -378,6 +378,58 @@ export default Alert;
 
 
 
+---------------------------------------------------------------------
+----------------------------------------------------------
+
+# NextJs:
+- What is Nectjs: A framework for building fast and search-engine frindly applications.
+- ![alt text](image-15.png)
+- Nextjs has it own router, we don't need to use an external router like react.
+- Nextjs comes with:
+- ![alt text](image-16.png)
+- What is Runtime:
+- We can execute js 1. within a web browser (client side)
+                    2. within a node js run time (on a server)
+- Adv of runtime execution is we can write the front end and back end in same nextjs
+- unlike react where we need to maintain fe and be seperatly and be in diff lang
+- using nextjs:
+- ![alt text](image-17.png)
+- 1️⃣ What is Server-Side Rendering (SSR)?
+- Server-Side Rendering means:
+- 👉 The HTML of your page is generated on the server and sent to the browser already filled with content.
+- In simple words:
+- React runs on the server first
+- HTML is created there
+- Browser receives ready-to-show HTML
+- Then React “wakes up” on the client (this is called hydration)
+- SSR is fast and search engine friendly
+- ## Creating new project:
+- open cmd-> npx create-next-app@13.4
+- ## Project Structure:
+- App folder is what contains all the componenets
+- Vercel created next 
+- ## Routing and Navigating:
+- For routing from one component to another, we can use a with href like <a href='/users'>Users</a> but when we click on Users
+- Every file will get reload but that is not the optimal way 
+- So, In react we use link to redirect
+- Link is a component of react Next
+- ## Client vs Server Component:
+- We can render our code in 2 ways:
+- CSR and SSR
+- ![alt text](image-18.png)
+- But SSR can't:
+    - Linsten to browser events( like click, change etc)
+    - Access browser APIS(local storage etc)
+- ![alt text](image-19.png)
+- So in real world applications we use a mix of SSR and CSR
+- ![alt text](image-20.png)
+- So for components which doesn't need to listen to broswer we can keep them in SS
+- which needs we can keep them CS so that the bundel size will decrease
+- But there is a better way than this like We can keep which small components needs to the CS adn otheres to server side
+- ![alt text](image-21.png)
+- ![alt text](image-22.png)
+- By default all the components in nextjs are server side components
+- 
 
 
 
@@ -387,6 +439,15 @@ export default Alert;
 
 
 
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
 ---------------------------------------------------------
 - ## Folder structure
 app/
